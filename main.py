@@ -37,7 +37,7 @@ def main():
 
     updater = Updater(token=bot_token)
     dp = updater.dispatcher
-    with open("QA/pliga51.txt", encoding="KOI8-R") as file:
+    with open("QA/123.txt", encoding="KOI8-R") as file:
         text = file.read()
     dp.bot_data["questionnaire"] = dictify_questions(text)
     dp.update_persistence()

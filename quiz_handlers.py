@@ -12,7 +12,7 @@ def dictify_questions(text: str):
 
 
 def main():
-    with open("QA/plehan17.txt", encoding="KOI8-R") as f:
+    with open("QA/123.txt", encoding="KOI8-R") as f:
         whole_text = f.read()
 
     questionnaire = dictify_questions(whole_text)
