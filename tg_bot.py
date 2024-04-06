@@ -1,7 +1,6 @@
 import logging
 from random import choice
 
-import redis
 from environs import Env
 from telegram import Update, ReplyKeyboardMarkup, Bot
 from telegram.ext import Updater, CallbackContext, MessageHandler, CommandHandler, Filters, ConversationHandler
@@ -59,9 +58,6 @@ def main():
     env.read_env()
 
     bot_token = env.str("TELEGRAM_BOT_TOKEN")
-    redis_host = env.str("REDIS_HOST")
-    redis_port = env.str("REDIS_PORT")
-    redis_password = env.str("REDIS_PASSWORD")
 
     logger_bot = Bot(token=env.str("TELEGRAM_LOGGING_BOT_TOKEN"))
     chat_id = env.str("TELEGRAM_USER_ID")
@@ -76,12 +72,6 @@ def main():
     with open(env.str("QUIZ_FILE_PATH", "QA/example.txt"), encoding="KOI8-R") as file:
         text = file.read()
     dp.bot_data["questionnaire"] = assemble_questionnaire(text)
-    dp.bot_data["redis"] = redis.Redis(
-        host=redis_host,
-        port=redis_port,
-        protocol=3,
-        password=redis_password,
-        decode_responses=True)
     dp.update_persistence()
     question_conversation = ConversationHandler(
         entry_points=[MessageHandler(Filters.regex(r"^Новый вопрос$"), send_question)],
