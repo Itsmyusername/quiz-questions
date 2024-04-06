@@ -73,19 +73,10 @@ def main():
         text = file.read()
     dp.bot_data["questionnaire"] = assemble_questionnaire(text)
     dp.update_persistence()
-    question_conversation = ConversationHandler(
-        entry_points=[MessageHandler(Filters.regex(r"^Новый вопрос$"), send_question)],
-        states={
-            ANSWERING: [
-                MessageHandler(Filters.regex(r"^Сдаться$"), give_up),
-                MessageHandler(Filters.text & ~Filters.command, check_answer),
-            ]
-        },
-        fallbacks=[CommandHandler("cancel", start)]
-    )
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(question_conversation)
-
+    dp.add_handler(MessageHandler(Filters.regex(r"^Новый вопрос$"), send_question))
+    dp.add_handler(MessageHandler(Filters.regex(r"^Сдаться$"), give_up))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, check_answer))
     updater.start_polling()
     updater.idle()
 
